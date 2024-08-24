@@ -1,28 +1,38 @@
 <template>
   <v-container class="main-container">
     <v-row class="mb-6" no-gutters>
-      <v-col md="5">
-        <v-container class="profile-pic-container">
-          <img src="../assets/pic.png" alt="Profile Picture" class="profile-pic" />
-        </v-container>
-      </v-col>
-      <v-col md="7" class="home-text-container">
+      <v-col md="6" class="home-text-container">
         <div>
           <div class="home-text-container">
-            <div class="home-subtext mb-6">About Me</div>
-            <div class="text-first home-text">
-              Aspiring Software Engineer | Web Developer | Problem Solver<br />
-              I am a B-tech (Computer Science & Engineering) student from Noida Institute of
-              Technology. I am a very persistent and hard-working individual, always keen to learn
-              new things. I possess a solid understanding of Data Structures and Algorithms and have
-              a strong aptitude for problem-solving. I'm a self-taught Web Developer. My other
-              fields of interest include astrophysics, practical chemistry, and applied physics.
-            </div>
-            <v-btn class="mt-6" @click="downloadPDF('myResume.pdf')" traget="_blank" color="primary"
-              >Download CV</v-btn
-            >
+            <div class="home-subtext">About Me</div>
           </div>
+          <div class="text-first home-text">
+            Aspiring Software Engineer | Web Developer | Problem Solver<br />
+            I am a B-tech (Computer Science & Engineering) student from Noida
+            Institute of Technology. I am a very persistent and hard-working
+            individual, always keen to learn new things. I possess a solid
+            understanding of Data Structures and Algorithms and have a strong
+            aptitude for problem-solving. I'm a self-taught Web Developer. My
+            other fields of interest include astrophysics, practical chemistry,
+            and applied physics.
+          </div>
+          <v-btn
+            class="mt-16"
+            @click="downloadPDF('myResume.pdf')"
+            traget="_blank"
+            color="primary"
+            >Download CV</v-btn
+          >
         </div>
+      </v-col>
+      <v-col md="6">
+        <v-container class="profile-pic-container">
+          <img
+            src="../assets/pic.png"
+            alt="Profile Picture"
+            class="profile-pic"
+          />
+        </v-container>
       </v-col>
     </v-row>
     <v-row no-gutters>
@@ -30,15 +40,15 @@
         <h1 class="experience_heading">My Experience</h1>
       </v-col>
     </v-row>
-    <v-row class="heading">
-      <v-timeline align="start" justify="center">
-        <v-timeline-item
+    <v-row>
+      <v-timeline :justify="dynamicCenter" :side="dynamicSide">
+        <v-timeline-item 
+        class="timeline"
           v-for="(item, index) in experienceData"
           :key="index"
           :dot-color="item.color"
           :size="item.size"
           fill-dot
-          width="600"
           dense
         >
           <ExperienceCard
@@ -53,27 +63,43 @@
 </template>
 
 <script setup>
-import ExperienceCard from '../components/ExperienceCard.vue'
-import { ref } from 'vue'
-import axios from 'axios'
+import ExperienceCard from '../components/ExperienceCard.vue';
+import { ref, computed } from 'vue';
+import axios from 'axios';
+import { useDisplay } from 'vuetify';
 
 const downloadPDF = async (fileName) => {
   try {
-    const filePath = `/${fileName}`
+    const filePath = `/${fileName}`;
     const response = await axios.get(filePath, {
-      responseType: 'blob'
-    })
-    const blob = new Blob([response.data], { type: 'application/pdf' })
-    const blobURL = window.URL.createObjectURL(blob)
-    const anchor = document.createElement('a')
-    anchor.href = blobURL
-    anchor.download = fileName
-    anchor.click()
-    window.URL.revokeObjectURL(blobURL)
+      responseType: 'blob',
+    });
+    const blob = new Blob([response.data], { type: 'application/pdf' });
+    const blobURL = window.URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = blobURL;
+    anchor.download = fileName;
+    anchor.click();
+    window.URL.revokeObjectURL(blobURL);
   } catch (error) {
-    console.error('Error downloading the PDF:', error)
+    console.error('Error downloading the PDF:', error);
   }
-}
+};
+
+const { mobile } = useDisplay();
+
+const dynamicSide = computed(() => {
+  if (mobile.value) {
+    return 'end';
+  } else return '';
+});
+
+const dynamicCenter = computed(() => {
+  if (mobile.value) {
+    return 'auto';
+  } else return 'center';
+});
+
 const experienceData = ref([
   {
     title: 'Software Engineer I',
@@ -82,7 +108,7 @@ const experienceData = ref([
                 applications. Passionate about building clean, efficient code and continuously
                 learning new technologies.`,
     color: 'amber-lighten-1',
-    size: 'large'
+    size: 'large',
   },
   {
     title: 'Freelance',
@@ -93,7 +119,7 @@ const experienceData = ref([
                 Whether you're looking for a complete website overhaul or new custom features,
                 I am dedicated to bringing your vision to life through innovative and effective web solutions.`,
     color: 'purple-lighten-2',
-    size: 'x-small'
+    size: 'x-small',
   },
   {
     title: 'Internship',
@@ -102,7 +128,7 @@ const experienceData = ref([
                  During this time, I honed my skills in front-end development and 
                  worked with modern technologies to create efficient and responsive web solutions.`,
     color: 'cyan-lighten-1',
-    size: 'large'
+    size: 'large',
   },
   {
     title: '12th',
@@ -110,13 +136,17 @@ const experienceData = ref([
                   I am a self-taught web developer with additional interests in astrophysics,
                   practical chemistry, and applied physics.`,
     color: 'red-lighten-1',
-    size: 'x-small'
-  }
-])
+    size: 'x-small',
+  },
+]);
 </script>
 
 <style>
 .main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   .heading {
     margin-top: 1rem;
     display: flex;
@@ -129,12 +159,12 @@ const experienceData = ref([
     margin-top: 4rem;
     display: flex;
     justify-content: center;
+    align-items: center;
     font-size: 2rem;
   }
 
   .profile-pic-container {
     position: relative;
-    top: 3rem;
     left: auto;
     right: auto;
     display: flex;
@@ -144,22 +174,9 @@ const experienceData = ref([
   .profile-pic {
     width: 450px;
     height: 450px;
-    border-radius: 50%;
-    border: 8px solid transparent;
+    border-radius: 30%;
     background-clip: padding-box;
     z-index: 1;
-  }
-
-  .profile-pic-container::before {
-    content: '';
-    position: absolute;
-    width: 480px;
-    height: 480px;
-    border-radius: 50%;
-    background: linear-gradient(20deg, #00ffef, #ff00e0);
-    filter: blur(10px);
-    z-index: 0;
-    animation: glow 2s infinite alternate;
   }
 
   @keyframes glow {
@@ -173,14 +190,15 @@ const experienceData = ref([
 
   .home-text {
     font-size: 1.2rem;
-    width: 800px;
+    width: auto;
     color: white;
+    position: relative;
+    top: 3rem;
   }
 
   .home-subtext {
     font-size: 2.5rem;
     color: white;
-    position: relative;
     display: inline-block;
   }
 
@@ -206,6 +224,11 @@ const experienceData = ref([
       right: auto;
     }
 
+    .time-line {
+      justify-items: center;
+      justify-content: center;
+    }
+
     .profile-pic {
       width: 200px;
       height: 200px;
@@ -217,6 +240,7 @@ const experienceData = ref([
     }
 
     .home-text {
+      width: auto;
       font-size: 0.9rem;
     }
 
@@ -260,9 +284,12 @@ const experienceData = ref([
   }
 
   @media (max-width: 480px) {
-    .heading,
     .experience_heading {
       font-size: 1.5rem;
+    }
+
+    .timeLine{
+      width: 300px;
     }
 
     .profile-pic-container {
@@ -280,6 +307,7 @@ const experienceData = ref([
     }
 
     .home-text {
+      width: auto;
       font-size: 0.7rem;
     }
 
@@ -288,7 +316,7 @@ const experienceData = ref([
     }
 
     .home-text-container {
-      width: auto;
+      width: 300px;
       top: 0.5rem;
     }
   }

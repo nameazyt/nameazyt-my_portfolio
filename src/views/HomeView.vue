@@ -163,14 +163,6 @@
   opacity: 1;
 }
 
-.animate-sparkle:active:after {
-  background: transparent;
-}
-
-.animate-sparkle:active {
-  color: #000;
-  font-weight: bold;
-}
 
 .home-container {
   display: flex;
