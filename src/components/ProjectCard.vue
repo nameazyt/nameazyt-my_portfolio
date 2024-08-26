@@ -1,10 +1,15 @@
-<template>
+<template> 
+
   <v-card class="mx-auto hover-card" max-width="344">
-    <v-img height="200px" :src="projectImage" cover class="hover-image"></v-img>
+    <!-- <v-skeleton-loader class="mx-auto" type="table-heading, list-item-two-line, image, table-tfoot" :loading="loading"> -->
+      <v-img height="200px" :src="projectImage" cover class="hover-image"></v-img>
+    <!-- </v-skeleton-loader> -->
 
     <v-card-title class="hover-title"> {{ projectTitle }}</v-card-title>
 
-    <v-card-subtitle class="hover-subtitle"> {{ projectSubTitle }}</v-card-subtitle>
+    <v-card-subtitle class="hover-subtitle">
+      {{ projectSubTitle }}</v-card-subtitle
+    >
 
     <v-card-actions>
       <v-spacer></v-spacer>
@@ -29,23 +34,30 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
-const show = ref(false)
+import { ref, onMounted } from 'vue';
 defineProps({
   projectTitle: {
-    type: String
+    type: String,
   },
   projectSubTitle: {
-    type: Number
+    type: Number,
   },
   projectContent: {
-    type: String
+    type: String,
   },
   projectImage: {
-    type: String
-  }
+    type: String,
+  },
+});
+const show = ref(false);
+const loading = ref(true)
+
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false
+  }, 2000);
 })
+
 </script>
 
 <style scoped>
@@ -72,7 +84,11 @@ defineProps({
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0)
+  );
   transition: opacity 0.5s;
   opacity: 0.6;
   pointer-events: none;

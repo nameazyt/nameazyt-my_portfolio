@@ -144,6 +144,8 @@ const ListOfProgressLinearSkills = ref([
 
 <style>
 .main-container {
+  overflow-x: hidden; /* Prevents horizontal overflow */
+  width: 100vw;
   .heading {
     margin-top: 2rem;
     font-size: 32px;

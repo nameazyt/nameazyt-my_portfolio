@@ -146,6 +146,8 @@ const experienceData = ref([
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-x: hidden; /* Prevents horizontal overflow */
+  width: 100vw;
 
   .heading {
     margin-top: 1rem;

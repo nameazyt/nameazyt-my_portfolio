@@ -28,12 +28,12 @@ watch(drawer, (newValue) => {
       <template v-slot:prepend>
         <v-app-bar-nav-icon class="navBar" @click="drawer = !drawer"></v-app-bar-nav-icon>
       </template>
-      <v-app-bar-title>Nitish Shamra</v-app-bar-title>
+      <v-app-bar-title>Nitish Sharma</v-app-bar-title>
       <nav class="test">
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/myInfo">My Info</RouterLink>
         <RouterLink to="/skills">Skills</RouterLink>
-        <RouterLink to="/projects">Project</RouterLink>
+        <RouterLink to="/projects">Projects</RouterLink>
         <RouterLink to="/contactMe">Contact Me</RouterLink>
       </nav>
     </v-app-bar>
@@ -70,7 +70,9 @@ watch(drawer, (newValue) => {
     </v-navigation-drawer>
 
     <v-main>
-      <router-view />
+      <!-- <transition name="slide-fade" mode="out-in"> -->
+        <router-view />
+      <!-- </transition> -->
     </v-main>
   </v-app>
 </template>
@@ -117,4 +119,19 @@ nav a {
 nav a:first-of-type {
   border: 0;
 }
+
+/* Slide animation */
+/* .slide-fade-enter-active, .slide-fade-leave-active {
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.slide-fade-enter-from {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.slide-fade-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+} */
 </style>
